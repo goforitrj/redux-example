@@ -5,9 +5,9 @@ const TOGGLE_TODO = 'todos/TOGGLE_TODO';
 
 let nextId = 1;
 
-export const addTodo = text => ({
+export const createTodo = text => ({
     type: ADD_TODO,
-    todo: { id: nextId++, text }
+    todo: { id: nextId++, text, done: false }
 });
 
 export const toggleTodo = id => ({
@@ -20,7 +20,9 @@ export default function reducer(state = initialState, action) {
         case ADD_TODO:
             return state.concat(action.todo);
         case TOGGLE_TODO:
-            return state.filter(todo => todo.is !== action.id);
+            return state.map(todo =>
+                todo.id === action.id ? { ...todo, done: !todo.done } : todo
+            );
         default:
             return state;
     }
